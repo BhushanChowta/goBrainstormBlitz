@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
 )
@@ -29,6 +30,7 @@ func main() {
 	total := len(questions)
 	correct := 0
 	reader := bufio.NewReader(os.Stdin)
+	rand.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
 	for i, q := range questions {
 		fmt.Print("Qn ", i+1, " - ", q[0], " = ")
 		ans, _ := reader.ReadString('\n')
