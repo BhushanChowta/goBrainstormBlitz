@@ -31,7 +31,12 @@ func main() {
 	correct := 0
 	reader := bufio.NewReader(os.Stdin)
 	rand.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
+	usedQns := make(map[int]bool)
 	for i, q := range questions {
+		if usedQns[i] {
+			continue
+		}
+		usedQns[i] = true
 		fmt.Print("Qn ", i+1, " - ", q[0], " = ")
 		ans, _ := reader.ReadString('\n')
 		ans = strings.TrimSpace(ans)
