@@ -4,15 +4,14 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"os"
 	"strings"
 )
 
 func main() {
-	fmt.Println("Welcome to Brainstorming!")
+	fmt.Println("Welcome to Quiz!")
 
-	fmt.Println("Press Enter to start the quiz...")
 	f, err := os.Open("questions.csv")
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -20,33 +19,32 @@ func main() {
 	}
 	defer f.Close()
 
-	r := csv.NewReader(f)
-	questions, err := r.ReadAll()
+	questions, err := csv.NewReader(f).ReadAll()
 	if err != nil {
 		fmt.Println("Error reading CSV:", err)
 		return
 	}
 
-	total := len(questions)
-	correct := 0
 	reader := bufio.NewReader(os.Stdin)
-	rand.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
-	usedQns := make(map[int]bool)
+	rand.Shuffle(len(questions), func(i, j int) {
+		questions[i], questions[j] = questions[j], questions[i]
+	})
+	isUsed := make([]bool, len(questions))
+	correctCount := 0
 	for i, q := range questions {
-		if usedQns[i] {
+		if isUsed[i] {
 			continue
 		}
-		usedQns[i] = true
-		fmt.Print("Qn ", i+1, " - ", q[0], " = ")
-		ans, _ := reader.ReadString('\n')
-		ans = strings.TrimSpace(ans)
-		if strings.EqualFold(ans, q[1]) {
+		isUsed[i] = true
+		fmt.Printf("Q.%d: %s = ", i+1, q[0])
+		answer, _ := reader.ReadString('\n')
+		answer = strings.TrimSpace(answer)
+		if answer == q[1] {
+			correctCount++
 			fmt.Println("Correct!")
-			correct++
 		} else {
-			fmt.Printf("Wrong! Correct answer: %s\n", q[1])
+			fmt.Println("Wrong! The correct answer is:", q[1])
 		}
 	}
-
-	fmt.Printf("Final Score: %d/%d\n", correct, total)
+	fmt.Printf("You answered %d out of %d questions correctly.\n", correctCount, len(questions))
 }
