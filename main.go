@@ -31,6 +31,8 @@ func main() {
 	})
 	isUsed := make([]bool, len(questions))
 	correctCount := 0
+	streak := 0
+	maxStreak := 0
 	for i, q := range questions {
 		if isUsed[i] {
 			continue
@@ -41,10 +43,16 @@ func main() {
 		answer = strings.TrimSpace(answer)
 		if answer == q[1] {
 			correctCount++
-			fmt.Println("Correct!")
+			streak++
+			if streak > maxStreak {
+				maxStreak = streak
+			}
+			fmt.Println("Correct! Current streak:", streak)
 		} else {
 			fmt.Println("Wrong! The correct answer is:", q[1])
+			streak = 0
 		}
 	}
+	fmt.Printf("Your longest correct answer streak was %d.\n", maxStreak)
 	fmt.Printf("You answered %d out of %d questions correctly.\n", correctCount, len(questions))
 }
