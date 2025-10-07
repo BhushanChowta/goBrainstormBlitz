@@ -33,6 +33,7 @@ func main() {
 	correctCount := 0
 	streak := 0
 	maxStreak := 0
+	incorrectStreak := 0
 	for i, q := range questions {
 		if isUsed[i] {
 			continue
@@ -44,6 +45,7 @@ func main() {
 		if answer == q[1] {
 			correctCount++
 			streak++
+			incorrectStreak = 0
 			if streak > maxStreak {
 				maxStreak = streak
 			}
@@ -51,8 +53,10 @@ func main() {
 		} else {
 			fmt.Println("Wrong! The correct answer is:", q[1])
 			streak = 0
+			incorrectStreak++
 		}
 	}
 	fmt.Printf("Your longest correct answer streak was %d.\n", maxStreak)
+	fmt.Printf("Your longest incorrect answer streak was %d.\n", incorrectStreak)
 	fmt.Printf("You answered %d out of %d questions correctly.\n", correctCount, len(questions))
 }
