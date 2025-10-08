@@ -56,7 +56,6 @@ func main() {
 			incorrectStreak++
 		}
 	}
-	fmt.Printf("Your longest correct answer streak was %d.\n", maxStreak)
-	fmt.Printf("Your longest incorrect answer streak was %d.\n", incorrectStreak)
+	fmt.Printf("Your longest correct answer streak was %d and incorrect answer streak was %d \n", maxStreak, incorrectStreak)
 	fmt.Printf("You answered %d out of %d questions correctly.\n", correctCount, len(questions))
 }
